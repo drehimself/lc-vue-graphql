@@ -11,6 +11,8 @@ import {
 
 import { createApolloProvider } from '@vue/apollo-option'
 
+import VueApolloComponents from '@vue/apollo-components'
+
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
@@ -30,4 +32,9 @@ const apolloProvider = createApolloProvider({
   defaultClient: apolloClient,
 })
 
-createApp(App).use(store).use(router).use(apolloProvider).mount('#app')
+createApp(App)
+  .use(store)
+  .use(router)
+  .use(apolloProvider)
+  .use(VueApolloComponents)
+  .mount('#app')
