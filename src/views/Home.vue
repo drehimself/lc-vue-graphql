@@ -9,6 +9,26 @@
           </router-link>
         </li>
       </ul>
+      <div v-if="posts">
+        <div>{{ posts.paginatorInfo.total }} total results</div>
+        <div>
+          Page {{ posts.paginatorInfo.currentPage }} of
+          {{ posts.paginatorInfo.lastPage }}
+        </div>
+        <div>
+          <router-link
+            :to="`/?page=${posts.paginatorInfo.currentPage - 1}`"
+            v-if="posts.paginatorInfo.currentPage != 1"
+            >Prev</router-link
+          >
+          &nbsp;
+          <router-link
+            :to="`/?page=${posts.paginatorInfo.currentPage + 1}`"
+            v-if="posts.paginatorInfo.hasMorePages"
+            >Next</router-link
+          >
+        </div>
+      </div>
     </div>
     <div>
       <h2>Apollo Query Component</h2>
@@ -63,17 +83,30 @@ export default {
     HelloWorld,
   },
   apollo: {
-    posts: gql`
-      query {
-        posts {
-          data {
-            id
-            title
-            body
+    posts: {
+      query: gql`
+        query getPosts($page: Int!) {
+          posts(page: $page) {
+            paginatorInfo {
+              currentPage
+              lastPage
+              total
+              hasMorePages
+            }
+            data {
+              id
+              title
+              body
+            }
           }
         }
-      }
-    `,
+      `,
+      variables() {
+        return {
+          page: this.$route.query.page ? parseInt(this.$route.query.page) : 1,
+        }
+      },
+    },
   },
 }
 </script>
