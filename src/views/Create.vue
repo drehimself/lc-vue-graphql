@@ -46,19 +46,14 @@ export default {
       this.$apollo
         .mutate({
           mutation: gql`
-            mutation createPost(
-              $user_id: ID!
-              $title: String!
-              $body: String!
-            ) {
-              createPost(user_id: $user_id, title: $title, body: $body) {
+            mutation createPost($title: String!, $body: String!) {
+              createPost(title: $title, body: $body) {
                 id
                 title
               }
             }
           `,
           variables: {
-            user_id: 1,
             title: this.title,
             body: this.body,
           },
